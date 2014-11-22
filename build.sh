@@ -13,6 +13,8 @@ function build() {
     go get github.com/c4pt0r/cfg
     go get github.com/acierto/go-jira-client
     go get launchpad.net/goyaml
+    go get github.com/GeertJohan/go.rice
+    go get github.com/GeertJohan/go.rice/rice
 
     go build
 }

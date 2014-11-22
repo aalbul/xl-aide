@@ -6,6 +6,8 @@ import (
 	"launchpad.net/goyaml"
 	"fmt"
 	"io/ioutil"
+	"github.com/GeertJohan/go.rice"
+	"log"
 )
 
 var xldConfig *cfg.Cfg
@@ -29,13 +31,26 @@ type Jira struct {
 	Password     string `yaml:"password"`
 }
 
+const (
+	xla_config_name = "xla-config.yml"
+)
+
+var xlaConfigPath = GetHomeDir() + string(os.PathSeparator) + xla_config_name
+
 func init() {
 
-	xlaConfigPath := GetHomeDir() + string(os.PathSeparator) + xla_config_name
-
 	if ! IsExist(xlaConfigPath) {
-		fmt.Printf("Please create xla-config.yml in your home directory. As a template file you can use xla-config-sample.yml")
-		os.Exit(1)
+		conf := rice.Config{
+			LocateOrder: []rice.LocateMethod{rice.LocateEmbedded, rice.LocateAppended, rice.LocateFS},
+		}
+		box, err := conf.FindBox("conf")
+
+		configSampleFileContent, err := box.String("xla-config-sample.yml")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		WriteToFile(xlaConfigPath, []byte(configSampleFileContent))
 	}
 
 	file, e := ioutil.ReadFile(xlaConfigPath)
@@ -51,6 +66,31 @@ func init() {
 	err := goyaml.Unmarshal([]byte(file), &xlaConfig)
 	if err != nil {
 		panic(err)
+	}
+
+	validateConfig()
+}
+
+func validateConfig() {
+
+	if xlaConfig.Jira.Login == "" {
+		log.Fatalf("Please provide your Jira login in [%s] file.", xlaConfigPath)
+		os.Exit(1)
+	}
+
+	if xlaConfig.Jira.Password == "" {
+		log.Fatalf("Please provide your Jira password in [%s] file.", xlaConfigPath)
+		os.Exit(1)
+	}
+
+	if xlaConfig.Xld.Login == "" {
+		log.Fatalf("Please provide your XLD admin login in [%s] file.", xlaConfigPath)
+		os.Exit(1)
+	}
+
+	if xlaConfig.Xld.Password == "" {
+		log.Fatalf("Please provide your XLD admin password in [%s] file.", xlaConfigPath)
+		os.Exit(1)
 	}
 }
 

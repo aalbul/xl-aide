@@ -6,7 +6,15 @@ import (
 	"io"
 	"os/user"
 	"log"
+	"io/ioutil"
 )
+
+func WriteToFile(file string, body []byte) {
+	err := ioutil.WriteFile(file, body, 0644)
+	if err != nil {
+		panic(err)
+	}
+}
 
 func CopyFile(source string, dest string) (err error) {
 	sourcefile, err := os.Open(source)

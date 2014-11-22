@@ -7,8 +7,6 @@ import (
 	"github.com/acierto/go-jira-client"
 	"os"
 	"fmt"
-	"io/ioutil"
-	"launchpad.net/goyaml"
 	"flag"
 	"log"
 	"runtime"
@@ -16,78 +14,17 @@ import (
 	"time"
 )
 
-
 const (
 	archive_name = "xla-snapshot"
 	full_archive_name = archive_name + ".zip"
-	xla_config_name = "xla-config.yml"
 )
 
 var list_of_dirs = []string{"conf/", "ext/", "repository/"}
 
 var jira *gojira.Jira
 
-
 func init() {
-	jira = getJira()
-}
-
-func createArchive() string {
-
-	xld_location := getXldLocation()
-
-	arc := archivex.ZipFile{}
-
-	arc.Create(archive_name)
-
-	//	arc.AddAll(xld_location+"plugins/", true) TODO: should read the plugins to metadata of archive
-	for _,dir := range list_of_dirs {
-		arc.AddAll(xld_location+dir, true)
-	}
-
-	arc.Close()
-
-	return xld_location + full_archive_name
-}
-
-func getXldLocation() string {
-	pwd, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	return pwd + string(os.PathSeparator)
-}
-
-func getJira() *gojira.Jira {
-
-	xlaConfigPath := GetHomeDir() + string(os.PathSeparator) + xla_config_name
-
-	if ! IsExist(xlaConfigPath) {
-		fmt.Printf("Please create xla-config.yml in your home directory. As a template file you can use xla-config-sample.yml")
-		os.Exit(1)
-	}
-
-	file, e := ioutil.ReadFile(xlaConfigPath)
-	if e != nil {
-		fmt.Printf("Config file error: %v\n", e)
-		os.Exit(1)
-	}
-
-	config := Config{}
-	err := goyaml.Unmarshal([]byte(file), &config)
-	if err != nil {
-		panic(err)
-	}
-
-	jira := gojira.NewJira(
-		config.Jira.Host,
-		config.Jira.ApiPath,
-		config.Jira.ActivityPath,
-		&gojira.Auth{config.Jira.Login, config.Jira.Password,},
-	)
-
-	return jira
+	jira = GetJira()
 }
 
 func main() {
@@ -115,6 +52,33 @@ func main() {
 	} else if *exportParam {
 		exportXlaArchive(*issueParam, false)
 	}
+}
+
+func createArchive() string {
+
+	xld_location := getXldLocation()
+
+	arc := archivex.ZipFile{}
+
+	arc.Create(archive_name)
+
+	//	arc.AddAll(xld_location+"plugins/", true) TODO: should read the plugins to metadata of archive
+	for _,dir := range list_of_dirs {
+		arc.AddAll(xld_location+dir, true)
+	}
+
+	arc.Close()
+
+	return xld_location + full_archive_name
+}
+
+func getXldLocation() string {
+	pwd, err := os.Getwd()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	return pwd + string(os.PathSeparator)
 }
 
 func restartXlDeploy() {
@@ -149,7 +113,7 @@ func exportXlaArchive(issueId string, replace bool) {
 		logErrorCleanAndExit(attachmentPath, err)
 	}
 
-	log.Printf("XLA attachment [%s] has been successfuly uploaded.", attachmentPath)
+	log.Printf("XLA attachment [%s] has been successfully uploaded.", attachmentPath)
 }
 
 func logErrorCleanAndExit(attachmentPath string, err error) {
@@ -181,7 +145,7 @@ func importXlaArchive(issueKey string) {
 
 	os.RemoveAll(archive_name)
 
-	log.Print("XLA attachment has been successfuly imported.")
+	log.Print("XLA attachment has been successfully imported.")
 }
 
 func generateId() string {
