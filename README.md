@@ -12,7 +12,8 @@ Then you need to set your GOROOT, how to do it you can have a look [here](https:
 For Linux/Mac
 
 ```
-$ build.sh```
+$ build.sh
+```
 
 For Windows
 
