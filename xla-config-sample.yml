@@ -1,9 +1,0 @@
-jira:
-  host:          http://localhost:5555
-  api_path:      /rest/api/2
-  activity_path: /activity
-  login:         User
-  password:      Password
-xld:
-  login:         User
-  password:      Password
