@@ -75,11 +75,3 @@ func startXlDeploy() {
 		exec.Command("sh","-c", "bin/server.sh").Start()
 	}
 }
-
-func logErrorCleanAndExit(attachmentPath string, err error) {
-	os.RemoveAll(attachmentPath)
-	if err != nil {
-		log.Print(err.Error())
-		os.Exit(1)
-	}
-}

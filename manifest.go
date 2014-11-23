@@ -9,9 +9,10 @@ import (
 
 const (
 	file_mode = 0644
+	plugins_metadata = ".plugins"
 )
 
-func createManifestForPlugins() string {
+func createManifestForPlugins() {
 
 	xld_location := getXldLocation()
 	dirName := xld_location  + "plugins"
@@ -28,10 +29,7 @@ func createManifestForPlugins() string {
 		}
 	}
 
-	pluginsMetadata := ".plugins"
-	if err := ioutil.WriteFile(pluginsMetadata, []byte(pluginNames), file_mode); err != nil {
-		log.Fatalf("WriteFile %s: %v", pluginsMetadata, err)
+	if err := ioutil.WriteFile(plugins_metadata, []byte(pluginNames), file_mode); err != nil {
+		log.Fatalf("WriteFile %s: %v", plugins_metadata, err)
 	}
-
-	return pluginsMetadata
 }

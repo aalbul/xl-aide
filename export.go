@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/acierto/archivex"
 	"log"
+	"os"
 )
 
 const (
@@ -18,8 +19,8 @@ func createArchive() string {
 
 	arc.Create(archive_name)
 
-	manifest := createManifestForPlugins()
-	arc.AddFile(manifest)
+	createManifestForPlugins()
+	arc.AddFile(plugins_metadata)
 
 	for _, dir := range list_of_dirs {
 		arc.AddAll(xld_location+dir, true)
@@ -42,5 +43,15 @@ func exportXlaArchive(issueId string, replace bool) {
 	}
 
 	log.Printf("XLA attachment [%s] has been successfully uploaded.", attachmentPath)
+}
+
+func logErrorCleanAndExit(attachmentPath string, err error) {
+	os.RemoveAll(attachmentPath)
+	if err != nil {
+		log.Print(err.Error())
+		os.Exit(1)
+	}
+
+	os.Remove(plugins_metadata)
 }
 
