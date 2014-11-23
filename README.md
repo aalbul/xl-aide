@@ -24,9 +24,8 @@ $ build.cmd
 Installation
 -------------
 
-You need to copy xl-aide binary file to the root of the XLD installation. In addition to that you need to create a **xla-config.yml** file in
-your user home directory, you can take a default configuration from **xla-config-sample.yml**, there you need to configure the access to your
- Jira and credentials of the admin user of XLD.
+When you run xl-aide first time, it will create **xla-config.yml** in your user home directory, where you will need to provide for some of the
+properties your specific values related to credentials of Jira user and XLD admin user.
 
 
 ## Usage
