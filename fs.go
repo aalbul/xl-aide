@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"fmt"
 	"io"
 	"os/user"
 	"log"
@@ -12,7 +11,7 @@ import (
 func WriteToFile(file string, body []byte) {
 	err := ioutil.WriteFile(file, body, 0644)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 }
 
@@ -37,7 +36,6 @@ func CopyFile(source string, dest string) (err error) {
 		if err != nil {
 			err = os.Chmod(dest, sourceinfo.Mode())
 		}
-
 	}
 
 	return
@@ -61,30 +59,27 @@ func CopyDir(source string, dest string) (err error) {
 	directory, _ := os.Open(source)
 
 	objects, err := directory.Readdir(-1)
+	sep := string(os.PathSeparator)
 
 	for _, obj := range objects {
 
-		sourcefilepointer := source + "/" + obj.Name()
-
-		destinationfilepointer := dest + "/" + obj.Name()
-
+		sourcefilepointer := source + sep + obj.Name()
+		destinationfilepointer := dest + sep + obj.Name()
 
 		if obj.IsDir() {
-			// create sub-directories - recursively
-			err = CopyDir(sourcefilepointer, destinationfilepointer)
-			if err != nil {
-				fmt.Println(err)
-			}
+			performCopy(sourcefilepointer, destinationfilepointer)
 		} else {
-			// perform copy
-			err = CopyFile(sourcefilepointer, destinationfilepointer)
-			if err != nil {
-				fmt.Println(err)
-			}
+			performCopy(sourcefilepointer, destinationfilepointer)
 		}
-
 	}
 	return
+}
+
+func performCopy(sourcefilepointer string, destinationfilepointer string) {
+	err := CopyFile(sourcefilepointer, destinationfilepointer)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func IsExist(filename string) bool {
@@ -95,7 +90,7 @@ func IsExist(filename string) bool {
 func GetHomeDir() string {
 	usr, err := user.Current()
 	if err != nil {
-		log.Fatal( err )
+		log.Fatal(err)
 	}
 	return usr.HomeDir
 }
