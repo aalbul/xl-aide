@@ -4,7 +4,7 @@ REM
 REM Batch script to build the XL Aide
 REM
 
-set GOPATH=!CD!
+set GOPATH=%~dp0
 
 go get github.com/twinj/uuid
 go get github.com/acierto/archivex
