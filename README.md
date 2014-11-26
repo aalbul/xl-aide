@@ -9,6 +9,8 @@ Build
 You need to download the latest version of [Go SDK](https://golang.org/dl/).
 Then you need to set your GOROOT, how to do it you can have a look [here](https://golang.org/doc/install).
 
+Apart from that you need to have installed in your computer: Git, Mercurial and Bazaar.
+
 For Linux/Mac
 
 ```

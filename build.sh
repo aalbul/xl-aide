@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 function build() {
     mm_dir=$(dirname `which $0`)
