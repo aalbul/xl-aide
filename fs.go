@@ -67,19 +67,20 @@ func CopyDir(source string, dest string) (err error) {
 		destinationfilepointer := dest + sep + obj.Name()
 
 		if obj.IsDir() {
-			performCopy(sourcefilepointer, destinationfilepointer)
+			// create sub-directories - recursively
+			err = CopyDir(sourcefilepointer, destinationfilepointer)
+			if err != nil {
+				log.Fatal(err)
+			}
 		} else {
-			performCopy(sourcefilepointer, destinationfilepointer)
+			// perform copy
+			err = CopyFile(sourcefilepointer, destinationfilepointer)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 	return
-}
-
-func performCopy(sourcefilepointer string, destinationfilepointer string) {
-	err := CopyFile(sourcefilepointer, destinationfilepointer)
-	if err != nil {
-		log.Fatal(err)
-	}
 }
 
 func IsExist(filename string) bool {
