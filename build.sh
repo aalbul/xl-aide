@@ -15,6 +15,7 @@ function build() {
     go get launchpad.net/goyaml
     go get github.com/GeertJohan/go.rice
     go get github.com/GeertJohan/go.rice/rice
+    go get github.com/stretchr/testify/assert
 
     go build
 }

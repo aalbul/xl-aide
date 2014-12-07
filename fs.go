@@ -95,3 +95,13 @@ func GetHomeDir() string {
 	}
 	return usr.HomeDir
 }
+
+func ListDir(dirName string) []os.FileInfo {
+	list, err := ioutil.ReadDir(dirName)
+
+	if err != nil {
+		log.Fatalf("ReadDir %s: %v", dirName, err)
+	}
+
+	return list
+}
