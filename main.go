@@ -69,8 +69,16 @@ func stopXlDeploy() {
 
 func startXlDeploy() {
 	if runtime.GOOS == "windows" {
-		exec.Command("cmd", "/C", "bin\\run.cmd").Start()
+		if IsExist("bin\\run.cmd") {
+			exec.Command("cmd", "/C", "bin\\run.cmd").Start()
+		} else {
+			exec.Command("cmd", "/C", "bin\\server.cmd").Start()
+		}
 	} else {
-		exec.Command("sh","-c", "bin/run.sh").Start()
+		if IsExist("bin/run.sh") {
+			exec.Command("sh", "-c", "bin/run.sh").Start()
+		} else {
+			exec.Command("sh", "-c", "bin/server.sh").Start()
+		}
 	}
 }

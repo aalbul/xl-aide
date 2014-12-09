@@ -8,4 +8,4 @@ export GOPATH=$mm_dir
 
 ./build.sh
 
-go test
+go test .

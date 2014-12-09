@@ -34,9 +34,11 @@ func importXlaArchive(issueKey string) {
 	unzipit.Unpack(attachment, unpackedFolder)
 	os.RemoveAll(attachmentPath)
 
-	for _,dir := range list_of_dirs {
+	preserverServiceWrapperConfig()
+
+	for _, dir := range list_of_dirs {
 		os.RemoveAll(dir)
-		CopyDir(unpackedFolder + sep + dir, dir)
+		CopyDir(unpackedFolder+sep+dir, dir)
 	}
 
 	findPluginsDifference(unpackedFolder)
@@ -45,20 +47,33 @@ func importXlaArchive(issueKey string) {
 	log.Print("XLA attachment has been successfully imported.")
 }
 
+func preserverServiceWrapperConfig() {
+	dest := archive_name + sep + "conf/"
+	confFile := dest + sep + "service-wrapper.conf"
+	if !IsExist(dest) {
+		os.MkdirAll(dest, 0755)
+	}
+	if !IsExist(confFile) {
+		CopyFile("conf"+sep+"service-wrapper.conf", dest+sep+"service-wrapper.conf")
+	}
+}
+
 func findPluginsDifference(unpackedFolder string) {
 	pluginsMetadataFile := unpackedFolder + sep + plugins_metadata
 
-	content, err := ioutil.ReadFile(pluginsMetadataFile)
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+	if IsExist(pluginsMetadataFile) {
+		content, err := ioutil.ReadFile(pluginsMetadataFile)
+		if err != nil {
+			log.Fatal(err.Error())
+		}
 
-	importedPluginList := strings.Split(string(content), eol)
-	foundArtifacts := strings.Split(readAllArtifacts(unpackedFolder), eol)
+		importedPluginList := strings.Split(string(content), eol)
+		foundArtifacts := strings.Split(readAllArtifacts(unpackedFolder), eol)
 
-	diff := difference(importedPluginList, foundArtifacts)
-	if cap(diff) > 0 {
-		log.Printf("Found the next list of missing plugins: %v. Please install them before proceed further.", )
-		os.Exit(1)
+		diff := difference(importedPluginList, foundArtifacts)
+		if cap(diff) > 0 {
+			log.Printf("Found the next list of missing plugins: %v. Please install them before proceed further.", )
+			os.Exit(1)
+		}
 	}
 }
