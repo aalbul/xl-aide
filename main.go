@@ -29,6 +29,8 @@ func main() {
 
 	flag.Parse()
 
+	ValidateConfig()
+
 	if *issueParam == "" {
 		log.Fatal("Please provide the issue number. I.e. xl-aide -issue=DEPL-6501")
 		os.Exit(1)

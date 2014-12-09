@@ -67,11 +67,9 @@ func init() {
 	if err != nil {
 		panic(err)
 	}
-
-	validateConfig()
 }
 
-func validateConfig() {
+func ValidateConfig() {
 
 	if xlaConfig.Jira.Login == "" {
 		log.Fatalf("Please provide your Jira login in [%s] file.", xlaConfigPath)
