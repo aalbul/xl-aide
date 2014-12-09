@@ -15,4 +15,3 @@ install:
 
 script:
  - go build
- - go test
