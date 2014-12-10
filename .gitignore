@@ -3,3 +3,5 @@ bin/
 pkg/
 target/
 xl-aide
+
+run.sh
