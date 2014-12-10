@@ -68,11 +68,11 @@ func findPluginsDifference(unpackedFolder string) {
 		}
 
 		importedPluginList := strings.Split(string(content), eol)
-		foundArtifacts := strings.Split(readAllArtifacts(unpackedFolder), eol)
+		foundArtifacts := strings.Split(readAllArtifacts("plugins"), eol)
 
 		diff := difference(importedPluginList, foundArtifacts)
 		if cap(diff) > 0 {
-			log.Printf("Found the next list of missing plugins: %v. Please install them before proceed further.", )
+			log.Printf("Found the next list of missing plugins: %v. Please install them before proceed further.", diff)
 			os.Exit(1)
 		}
 	}
