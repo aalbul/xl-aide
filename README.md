@@ -19,8 +19,6 @@ sudo apt-get update
 sudo apt-get install golang
 ```
 
-Apart from that you need to have installed in your computer: Git, Mercurial and Bazaar.
-
 For Linux/Mac
 
 ```
