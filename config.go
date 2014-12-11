@@ -61,7 +61,6 @@ func init() {
 
 	sep := string(os.PathSeparator)
 	xldConfig = cfg.NewCfg("conf" + sep + "deployit.conf")
-	xlaConfig = cfg.NewCfg(xlaConfigPath)
 	xldConfig.Load()
 
 	err := goyaml.Unmarshal([]byte(file), &xlaConfig)
@@ -80,7 +79,7 @@ func ValidateConfig() {
 	if xlaConfig.Jira.Password == "" {
 		log.Fatalf("Please provide your Jira password in [%s] file.", xlaConfigPath)
 		os.Exit(1)
-	} else if !isBase64(xlaStruct.Jira.Password) {
+	} else if !isBase64(xlaConfig.Jira.Password) {
 		//TODO: update configuration file with encoded password
 	}
 
@@ -92,7 +91,7 @@ func ValidateConfig() {
 	if xlaConfig.Xld.Password == "" {
 		log.Fatalf("Please provide your XLD admin password in [%s] file.", xlaConfigPath)
 		os.Exit(1)
-	} else if !isBase64(xlaStruct.Xld.Password) {
+	} else if !isBase64(xlaConfig.Xld.Password) {
 		//TODO: update configuration file with encoded password
 	}
 }
