@@ -26,6 +26,8 @@ func createArchive() string {
 		arc.AddAll(xld_location+dir, true)
 	}
 
+
+
 	arc.Close()
 
 	return xld_location + full_archive_name
