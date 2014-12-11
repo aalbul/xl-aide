@@ -19,3 +19,12 @@ func difference(slice1 []string, slice2 []string) []string {
 
 	return diff
 }
+
+func contains(a string, list []string) bool {
+	for _, b := range list {
+		if b == a {
+			return true
+		}
+	}
+	return false
+}

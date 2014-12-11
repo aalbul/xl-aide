@@ -26,7 +26,7 @@ func createArchive() string {
 		arc.AddAll(xld_location+dir, true)
 	}
 
-
+	//arc.AddWithExcludedExtensions(xld_location+"plugins/", []string{"jar", "xldp"})
 
 	arc.Close()
 
