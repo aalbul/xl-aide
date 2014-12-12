@@ -38,8 +38,10 @@ func importXlaArchive(issueKey string) {
 
 	for _, dir := range list_of_dirs {
 		os.RemoveAll(dir)
-		CopyDir(unpackedFolder+sep+dir, dir/*, []string{}*/)
+		CopyDir(unpackedFolder+sep+dir, dir)
 	}
+
+	CopyDir(unpackedFolder+sep+"plugins/", "plugins/")
 
 	findPluginsDifference(unpackedFolder)
 	os.RemoveAll(unpackedFolder)
