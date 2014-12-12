@@ -10,7 +10,7 @@ func FireAndForget(method string, url string) {
 	if err != nil {
 		panic(fmt.Sprintf("Error while building url request [%s]", url))
 	}
-	req.SetBasicAuth(GetXlaConfig().Xld.Login, GetXlaConfig().Xld.Password)
+	req.SetBasicAuth(GetXlaConfig().Xld.Login, decode(GetXlaConfig().Xld.Password))
 
 	client := &http.Client{}
 	client.Do(req)

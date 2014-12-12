@@ -12,7 +12,7 @@ func GetJira() *gojira.Jira {
 		config.Host,
 		config.ApiPath,
 		config.ActivityPath,
-		&gojira.Auth{config.Login, config.Password,},
+		&gojira.Auth{config.Login, decode(config.Password),},
 	)
 
 }

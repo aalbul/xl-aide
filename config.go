@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"github.com/GeertJohan/go.rice"
 	"log"
+	"gopkg.in/yaml.v1"
 )
 
 var xldConfig *cfg.Cfg
@@ -41,32 +42,32 @@ func init() {
 
 	if ! IsExist(xlaConfigPath) {
 		conf := rice.Config{
-			LocateOrder: []rice.LocateMethod{rice.LocateEmbedded, rice.LocateAppended, rice.LocateFS},
-		}
-		box, err := conf.FindBox("conf")
-
-		configSampleFileContent, err := box.String("xla-config-sample.yml")
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		WriteToFile(xlaConfigPath, []byte(configSampleFileContent))
+	LocateOrder: []rice.LocateMethod{rice.LocateEmbedded, rice.LocateAppended, rice.LocateFS},
 	}
+	box, err := conf.FindBox("conf")
 
-	file, e := ioutil.ReadFile(xlaConfigPath)
-	if e != nil {
-		fmt.Printf("Config file error: %v\n", e)
-		os.Exit(1)
-	}
-
-	sep := string(os.PathSeparator)
-	xldConfig = cfg.NewCfg("conf" + sep + "deployit.conf")
-	xldConfig.Load()
-
-	err := goyaml.Unmarshal([]byte(file), &xlaConfig)
+	configSampleFileContent, err := box.String("xla-config-sample.yml")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
+
+	WriteToFile(xlaConfigPath, []byte(configSampleFileContent))
+}
+
+file, e := ioutil.ReadFile(xlaConfigPath)
+if e != nil {
+fmt.Printf("Config file error: %v\n", e)
+os.Exit(1)
+}
+
+sep := string(os.PathSeparator)
+xldConfig = cfg.NewCfg("conf" + sep + "deployit.conf")
+xldConfig.Load()
+
+err := goyaml.Unmarshal([]byte(file), &xlaConfig)
+if err != nil {
+panic(err)
+}
 }
 
 func ValidateConfig() {
@@ -80,7 +81,7 @@ func ValidateConfig() {
 		log.Fatalf("Please provide your Jira password in [%s] file.", xlaConfigPath)
 		os.Exit(1)
 	} else if !isBase64(xlaConfig.Jira.Password) {
-		//TODO: update configuration file with encoded password
+		xlaConfig.Jira.Password = encode(xlaConfig.Jira.Password)
 	}
 
 	if xlaConfig.Xld.Login == "" {
@@ -92,7 +93,15 @@ func ValidateConfig() {
 		log.Fatalf("Please provide your XLD admin password in [%s] file.", xlaConfigPath)
 		os.Exit(1)
 	} else if !isBase64(xlaConfig.Xld.Password) {
-		//TODO: update configuration file with encoded password
+		xlaConfig.Xld.Password = encode(xlaConfig.Xld.Password)
+	}
+
+	d, _ := yaml.Marshal(&xlaConfig)
+
+	err := ioutil.WriteFile(xlaConfigPath, d, 0644)
+	if err != nil {
+		log.Fatalf("During updating of xla config file happened an error: %s ", err.Error())
+		os.Exit(1)
 	}
 }
 
