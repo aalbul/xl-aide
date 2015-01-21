@@ -8,7 +8,7 @@ import (
 	"io/ioutil"
 	"github.com/GeertJohan/go.rice"
 	"log"
-	"gopkg.in/yaml.v1"
+	"github.com/acierto/yaml.v1"
 )
 
 var xldConfig *cfg.Cfg
