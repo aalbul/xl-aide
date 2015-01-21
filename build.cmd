@@ -6,6 +6,7 @@ REM
 
 set GOPATH=%~dp0
 
+go get gopkg.in/yaml.v1
 go get github.com/twinj/uuid
 go get github.com/acierto/archivex
 go get github.com/acierto/unzipit
