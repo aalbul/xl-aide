@@ -20,6 +20,14 @@ sudo apt-get update
 sudo apt-get install golang
 ```
 
+For Fedora:
+
+You need to install besides go sdk as well gccgo (due to bugs in Fedora): sudo yum install gcc-go
+
+```
+$ build.fedora.sh
+```
+
 For Linux/Mac
 
 ```
