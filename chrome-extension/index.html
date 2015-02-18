@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>XL Aide</title>
+
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="assets/base.css">
+
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="js/app.js"></script>
+</head>
+
+<body>
+<div class="row"  ng-app="xl-aide">
+    <div class="col-md-8">
+        <form class="form-horizontal" role="form">
+            <fieldset>
+
+                <legend>XL Aide</legend>
+
+                <div class="form-group">
+                    <label class="col-md-2 control-label" for="textinput">Issue</label>
+
+                    <div class="col-md-10">
+                        <input type="text" placeholder="Jira issue number (for example DEPL-1002)" class="form-control">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="pull-right">
+                            <button type="submit" class="btn btn-primary">Import</button>
+                            <button type="submit" class="btn btn-warning">Export</button>
+                        </div>
+                    </div>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+</div>
+</body>
+</html>

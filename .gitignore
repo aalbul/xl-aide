@@ -1,7 +1,10 @@
 .idea/
+.DS_Store
 bin/
 pkg/
 target/
 xl-aide
 
-run.sh
+chrome-extension/bower_components/
+
+./run.sh
