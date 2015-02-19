@@ -21,6 +21,7 @@ func init() {
 
 func main() {
 
+	serverParam := flag.Bool("server", false, "Run XL Aide as a web server")
 	issueParam := flag.String("issue", "", "Specify your Jira issue, i.e. -issue=DEPL-6501")
 	exportParam := flag.Bool("export", true, "By default you are exporting")
 	forceParam := flag.Bool("force", false, "Export XLA package and replace the previous uploaded package")
@@ -30,6 +31,10 @@ func main() {
 	flag.Parse()
 
 	ValidateConfig()
+
+	if *serverParam {
+		runServer();
+	}
 
 	if *issueParam == "" {
 		log.Fatal("Please provide the issue number. I.e. xl-aide -issue=DEPL-6501")

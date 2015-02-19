@@ -20,3 +20,7 @@ legend.main-title {
     margin: 10px 0 0 25px;
     text-align: center;
 }
+
+.radio-label {
+    margin-left: 10px;
+}

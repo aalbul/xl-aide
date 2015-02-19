@@ -1,24 +1,30 @@
 'use strict';
 
-xlAide.controller( 'ServerController', function ServerController( $scope ) {
+xlAide.controller('ServerController', function ServerController($scope, ServerService) {
 
-    $scope.importSnapshot = function() {
-        if ($scope.serverForm.$valid) {
-            console.log('importSnapshot');
-        }
+    $scope.importSnapshot = function () {
+        ServerService.import(
+            {
+                jiraIssue: $scope.jiraIssue,
+                restartServerAfterImport: $scope.restartServerAfterImport
+            }
+        );
     };
 
-    $scope.exportSnapshot = function() {
-        if ($scope.serverForm.$valid) {
-            console.log('exportSnapshot');
-        }
+    $scope.exportSnapshot = function () {
+        ServerService.export(
+            {
+                jiraIssue: $scope.jiraIssue,
+                overwriteAlreadyExported: $scope.overwriteAlreadyExported
+            }
+        );
     };
 
-    $scope.isImportDisabled = function() {
+    $scope.isImportDisabled = function () {
         return $scope.serverForm.$invalid;
     };
 
-    $scope.isExportDisabled = function() {
+    $scope.isExportDisabled = function () {
         return $scope.serverForm.$invalid;
     };
 

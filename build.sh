@@ -16,7 +16,8 @@ function build() {
     go get github.com/GeertJohan/go.rice
     go get github.com/GeertJohan/go.rice/rice
     go get github.com/stretchr/testify/assert
-    go get gopkg.in/yaml.v1
+    go get gopkg.in/acierto/yaml.v1
+    go get github.com/go-martini/martini
 
     go build
 }
