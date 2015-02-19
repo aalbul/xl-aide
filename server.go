@@ -8,7 +8,6 @@ import (
 
 func runServer() {
 	m := martini.Classic()
-	m.Use(martini.Static("web"))
 
 	m.Get("/import", func(req *http.Request) (int, string) {
 			jiraIssue := req.URL.Query()["jiraIssue"][0]
