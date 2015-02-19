@@ -13,8 +13,9 @@ xlAide.controller('ServerController', function ServerController($scope, ServerSe
         ).success(function(data) {
             $scope.jiraIssue = '';
             $scope.successResult = data;
-        }).error(function(data) {
+        }).error(function(data, status) {
             $scope.errorResult = data;
+            $scope.checkAndNotifyAboutServerConnection(status);
         });
     };
 
@@ -29,9 +30,16 @@ xlAide.controller('ServerController', function ServerController($scope, ServerSe
         ).success(function(data) {
             $scope.jiraIssue = '';
             $scope.successResult = data;
-        }).error(function(data) {
+        }).error(function(data, status) {
             $scope.errorResult = data;
+            $scope.checkAndNotifyAboutServerConnection(status);
         });
+    };
+
+    $scope.checkAndNotifyAboutServerConnection = function(status) {
+        if (status == 0) {
+            $scope.errorResult = 'Server is not reachable. Please check that XL-Aide server is up and running';
+        }
     };
 
     $scope.clear = function() {
