@@ -1,16 +1,22 @@
 body {
-	width: 300px;
+    width: 300px;
 }
 
-.form-horizontal .control-label{
-	text-align:left;
+.form-horizontal .control-label {
+    padding-top: 7px;
+    margin-bottom: 0;
 }
 
 legend.main-title {
-	text-align: center
+    text-align: center
+}
+
+.form-horizontal .form-group {
+    margin-right: 0;
+    margin-left: 0;
 }
 
 .form-label {
-	margin: 10px 0 0 25px;
-	text-align: center;
- }
+    margin: 10px 0 0 25px;
+    text-align: center;
+}
