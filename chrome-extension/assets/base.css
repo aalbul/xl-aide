@@ -1,7 +1,16 @@
 body {
-	width: 600px;
+	width: 300px;
 }
 
 .form-horizontal .control-label{
 	text-align:left;
 }
+
+legend.main-title {
+	text-align: center
+}
+
+.form-label {
+	margin: 10px 0 0 25px;
+	text-align: center;
+ }

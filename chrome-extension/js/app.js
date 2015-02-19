@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('xl-aide', []);
+var xlAide = angular.module('xl-aide', []);
