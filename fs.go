@@ -6,7 +6,7 @@ import (
 	"os/user"
 	"log"
 	"io/ioutil"
-//	"path/filepath"
+	//	"path/filepath"
 )
 
 func WriteToFile(file string, body []byte) {
@@ -42,7 +42,7 @@ func CopyFile(source string, dest string) (err error) {
 	return
 }
 
-func CopyDir(source string, dest string/*, excludedExtentions []string*/) (err error) {
+func CopyDir(source string, dest string) (err error) {
 
 	// get properties of source dir
 	sourceinfo, err := os.Stat(source)
@@ -69,18 +69,16 @@ func CopyDir(source string, dest string/*, excludedExtentions []string*/) (err e
 
 		if obj.IsDir() {
 			// create sub-directories - recursively
-			err = CopyDir(sourcefilepointer, destinationfilepointer/*, excludedExtentions*/)
+			err = CopyDir(sourcefilepointer, destinationfilepointer)
 			if err != nil {
 				log.Fatal(err)
 			}
 		} else {
 			// perform copy
-//			if ! contains(filepath.Ext(sourcefilepointer), excludedExtentions) {
-				err = CopyFile(sourcefilepointer, destinationfilepointer)
-				if err != nil {
-					log.Fatal(err)
-				}
-//			}
+			err = CopyFile(sourcefilepointer, destinationfilepointer)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 	return

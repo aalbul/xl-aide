@@ -6,6 +6,8 @@ import (
 	"github.com/acierto/unzipit"
 	"io/ioutil"
 	"strings"
+	"errors"
+	"fmt"
 )
 
 const (
@@ -14,17 +16,15 @@ const (
 	sep = string(os.PathSeparator)
 )
 
-func importXlaArchive(issueKey string) {
+func importXlaArchive(issueKey string) error {
 	attachmentPath,err := jira.DownloadAttachment(issueKey, full_archive_name)
 
 	if err != nil {
-		log.Printf(err.Error())
-		os.Exit(1)
+		return err
 	}
 
 	if attachmentPath == "" {
-		log.Printf("Nothing to import. XLA attachment for issue [%s] has not been found.", issueKey)
-		os.Exit(1)
+		return errors.New(fmt.Sprintf("Nothing to import. XLA attachment for issue [%s] has not been found.", issueKey))
 	}
 
 	attachment, _ := os.Open(attachmentPath)
@@ -43,10 +43,17 @@ func importXlaArchive(issueKey string) {
 
 	CopyDir(unpackedFolder+sep+"plugins/", "plugins/")
 
-	findPluginsDifference(unpackedFolder)
+	err = findPluginsDifference(unpackedFolder)
+
+	if err != nil {
+		return err;
+	}
+
 	os.RemoveAll(unpackedFolder)
 
 	log.Print("XLA attachment has been successfully imported.")
+
+	return nil;
 }
 
 func preserverServiceWrapperConfig() {
@@ -60,7 +67,7 @@ func preserverServiceWrapperConfig() {
 	}
 }
 
-func findPluginsDifference(unpackedFolder string) {
+func findPluginsDifference(unpackedFolder string) error {
 	pluginsMetadataFile := unpackedFolder + sep + plugins_metadata
 
 	if IsExist(pluginsMetadataFile) {
@@ -74,8 +81,9 @@ func findPluginsDifference(unpackedFolder string) {
 
 		diff := difference(importedPluginList, foundArtifacts)
 		if cap(diff) > 0 {
-			log.Printf("Found the next list of missing plugins: %v. Please install them before proceed further.", diff)
-			os.Exit(1)
+			errors.New(fmt.Sprintf("Found the next list of missing plugins: %v. Please install them before proceed further.", diff))
 		}
 	}
+
+	return nil;
 }

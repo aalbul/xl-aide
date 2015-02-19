@@ -42,7 +42,11 @@ func main() {
 	}
 
 	if *importParam {
-		importXlaArchive(*issueParam)
+		err := importXlaArchive(*issueParam)
+		if err != nil {
+			log.Println(err)
+			os.Exit(1)
+		}
 		if *restartParam {
 			restartXlDeploy()
 		}

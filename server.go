@@ -10,24 +10,38 @@ func runServer() {
 	m := martini.Classic()
 	m.Use(martini.Static("web"))
 
-	m.Get("/import", func(req *http.Request) {
+	m.Get("/import", func(req *http.Request) (int, string) {
 			jiraIssue := req.URL.Query()["jiraIssue"][0]
-			restartServerAfterImport := req.URL.Query()["restartServerAfterImport"][0]
-			importXlaArchive(jiraIssue)
-			enabled,_ := strconv.ParseBool(restartServerAfterImport)
-			if enabled {
+			err := importXlaArchive(jiraIssue)
+
+			if err != nil {
+				return 500, err.Error()
+			}
+
+			if isParamEnabled(req, "restartServerAfterImport") {
 				restartXlDeploy()
 			}
+
+			return 200, "XLA attachment has been successfully imported."
 		})
 
 	m.Get("/export", func(req *http.Request) {
 			jiraIssue := req.URL.Query()["jiraIssue"][0]
-			overwriteAlreadyExported := req.URL.Query()["overwriteAlreadyExported"][0]
-			enabled,_ := strconv.ParseBool(overwriteAlreadyExported)
-			if enabled {
+			if isParamEnabled(req, "overwriteAlreadyExported") {
 				exportXlaArchive(jiraIssue, true)
 			}
 		})
 
 	m.Run()
+}
+
+func isParamEnabled(req *http.Request, paramName string) bool {
+	paramValue := req.URL.Query()[paramName]
+
+	if len(paramValue) > 0 {
+		enabled,_ := strconv.ParseBool(paramValue[0])
+		return enabled;
+	}
+
+	return false;
 }
