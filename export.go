@@ -33,27 +33,26 @@ func createArchive() string {
 	return xld_location + full_archive_name
 }
 
-func exportXlaArchive(issueId string, replace bool) {
+func exportXlaArchive(issueId string, replace bool) error {
 	attachmentPath := createArchive()
 
+	var err error
+
 	if replace {
-		err := jira.UpdateAttachment(issueId, attachmentPath)
-		logErrorCleanAndExit(attachmentPath, err)
+		err = jira.UpdateAttachment(issueId, attachmentPath)
+		clean(attachmentPath)
 	} else {
-		err := jira.AddAttachment(issueId, attachmentPath)
-		logErrorCleanAndExit(attachmentPath, err)
+		err = jira.AddAttachment(issueId, attachmentPath)
+		clean(attachmentPath)
 	}
 
 	log.Printf("XLA attachment [%s] has been successfully uploaded.", attachmentPath)
+
+	return err;
 }
 
-func logErrorCleanAndExit(attachmentPath string, err error) {
+func clean(attachmentPath string) {
 	os.RemoveAll(attachmentPath)
-	if err != nil {
-		log.Print(err.Error())
-		os.Exit(1)
-	}
-
 	os.Remove(plugins_metadata)
 }
 

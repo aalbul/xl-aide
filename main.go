@@ -43,26 +43,22 @@ func main() {
 
 	if *importParam {
 		err := importXlaArchive(*issueParam)
-		if err != nil {
-			log.Println(err)
-			os.Exit(1)
-		}
+		logAndExit(err)
 		if *restartParam {
 			restartXlDeploy()
 		}
 	} else if *forceParam {
-		exportXlaArchive(*issueParam, true)
+		err := exportXlaArchive(*issueParam, true)
+		logAndExit(err)
 	} else if *exportParam {
-		exportXlaArchive(*issueParam, false)
+		err := exportXlaArchive(*issueParam, false)
+		logAndExit(err)
 	}
 }
 
 func getXldLocation() string {
 	pwd, err := os.Getwd()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+	logAndExit(err)
 	return pwd + string(os.PathSeparator)
 }
 
@@ -91,5 +87,12 @@ func startXlDeploy() {
 		} else {
 			exec.Command("sh", "-c", "bin/server.sh").Start()
 		}
+	}
+}
+
+func logAndExit(err error) {
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }

@@ -1,15 +1,9 @@
-xlAide.factory('ServerService', function ($http, xlAideHost) {
+xlAide.factory('HttpService', function ($http, xlAideHost) {
 
     return {
-        'import': function(params) {
+        'get': function(url, params) {
             var defaults  = {"headers": {"Accept": 'application/json'}};
-            return $http.get(xlAideHost + 'import', {
-                params: params
-            }, defaults);
-        },
-        'export': function(params) {
-            var defaults = {"headers": {"Accept": 'application/json', "Content-Type": 'application/json'}};
-            return $http.get(xlAideHost + 'export', {
+            return $http.get(xlAideHost + url, {
                 params: params
             }, defaults);
         }

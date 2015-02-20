@@ -24,11 +24,16 @@ func runServer() {
 			return 200, "XLA attachment has been successfully imported."
 		})
 
-	m.Get("/export", func(req *http.Request) {
+	m.Get("/export", func(req *http.Request) (int, string) {
 			jiraIssue := req.URL.Query()["jiraIssue"][0]
-			if isParamEnabled(req, "overwriteAlreadyExported") {
-				exportXlaArchive(jiraIssue, true)
+
+			err := exportXlaArchive(jiraIssue, isParamEnabled(req, "overwriteAlreadyExported"))
+
+			if err != nil {
+				return 500, err.Error()
 			}
+
+			return 200, "XLA attachment has been successfully uploaded."
 		})
 
 	m.Run()

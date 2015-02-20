@@ -1,11 +1,11 @@
 'use strict';
 
-xlAide.controller('ServerController', function ServerController($scope, ServerService) {
+xlAide.controller('ServerController', function ServerController($scope, HttpService) {
 
     $scope.importSnapshot = function () {
         $scope.clear();
 
-        ServerService.import(
+        HttpService.get('import',
             {
                 jiraIssue: $scope.jiraIssue,
                 restartServerAfterImport: $scope.restartServerAfterImport
@@ -22,7 +22,7 @@ xlAide.controller('ServerController', function ServerController($scope, ServerSe
     $scope.exportSnapshot = function () {
         $scope.clear();
 
-        ServerService.export(
+        HttpService.get('export',
             {
                 jiraIssue: $scope.jiraIssue,
                 overwriteAlreadyExported: $scope.overwriteAlreadyExported
