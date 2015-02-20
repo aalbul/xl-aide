@@ -45,6 +45,8 @@ func runServer() {
 	m.Get("/pick", func(req *http.Request) (int, string) {
 			request := gojira.IssuePickRequest {
 				Query: req.URL.Query()["query"][0],
+				ShowSubTasks: isParamEnabled(req, "showSubTasks"),
+				ShowSubTaskParent: isParamEnabled(req, "showSubTaskParent"),
 			}
 			issues := jira.PickIssues(&request)
 	
