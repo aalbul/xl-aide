@@ -4,6 +4,8 @@ import (
 	"net/http"
 	"github.com/go-martini/martini"
 	"strconv"
+	"encoding/json"
+	"github.com/acierto/go-jira-client"
 )
 
 func runServer() {
@@ -34,6 +36,20 @@ func runServer() {
 			}
 
 			return 200, "XLA attachment has been successfully uploaded."
+		})
+
+	m.Get("/jiraHost", func(req *http.Request) (int, string) {
+			return 200, GetXlaConfig().Jira.Host
+		})
+
+	m.Get("/pick", func(req *http.Request) (int, string) {
+			request := gojira.IssuePickRequest {
+				Query: req.URL.Query()["query"][0],
+			}
+			issues := jira.PickIssues(&request)
+	
+			jsonString, _ := json.Marshal(issues)
+			return 200, string(jsonString)
 		})
 
 	m.Run()
